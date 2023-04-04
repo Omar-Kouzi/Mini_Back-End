@@ -3,6 +3,7 @@ import Program from "../models/program.model.js";
 //create
 
 const createProgram = async (req, res) => {
+  console.log(req.file)
   if (!req.body.title) {
     res.status(203).json({
       status: 203,
@@ -18,6 +19,8 @@ const createProgram = async (req, res) => {
     message: `success`,
     data: program,
   });
+
+
 };
 
 //getAll
@@ -35,7 +38,7 @@ const getAllPrograms = async (req, res) => {
 
 const getProgramsById = async (req, res) => {
   const id = req.body.id;
-   
+
   const program = await Program.findById(id);
   if (program) {
     return res.status(200).json({
@@ -50,8 +53,6 @@ const getProgramsById = async (req, res) => {
 const deleteProgramsById = async (req, res) => {
   const id = req.body.id;
   const deletedprogram = await Program.findByIdAndDelete(id);
-  console.log(deletedprogram)
-
   if (deletedprogram) {
     return res.status(200).json({
       message: `${id} had been deleted successfully`,
@@ -59,4 +60,9 @@ const deleteProgramsById = async (req, res) => {
   } else return res.status(404).json({ message: `${id} not found` });
 };
 
-export default { getAllPrograms, getProgramsById, createProgram , deleteProgramsById};
+export default {
+  getAllPrograms,
+  getProgramsById,
+  createProgram,
+  deleteProgramsById,
+};
