@@ -8,7 +8,7 @@ const ProgramShema = mongoose.Schema({
     require: true,
   },
   subTitle: String,
-  descripyion: String,
+  description: String,
   image: String,
 });
 

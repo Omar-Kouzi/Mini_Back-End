@@ -3,25 +3,26 @@ import Program from "../models/program.model.js";
 //create
 
 const createProgram = async (req, res) => {
-  console.log(req.file)
-  if (!req.body.title) {
-    res.status(203).json({
-      status: 203,
-      message: `your title is null`,
-      data: null,
+  const image = req.file ? req.file.path : null;
+  const { title, subTitle, description } = req.body;
+  console.log(req.file);
+  const image_name = req.file.originalname;
+  const program = new Program({ title, subTitle, description, image: image_name });
+  try {
+    const savedProgram = await program.save();
+    res.json({
+      message: "Program created successfully",
+      status: 200,
+      data: savedProgram,
     });
-    return 0;
+  } catch (error) {
+    res.json({
+      message: "Program created failed",
+      status: 203,
+    });
   }
-
-  const program = await Program.create(req.body);
-  res.status(200).json({
-    status: 200,
-    message: `success`,
-    data: program,
-  });
-
-
 };
+
 
 //getAll
 
@@ -48,6 +49,21 @@ const getProgramsById = async (req, res) => {
   } else return res.status(404).json({ message: `${id} not found` });
 };
 
+//update
+
+const updateProgram = async (req, res) => {
+  const update = await Program.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+  });
+  console.log(req.body);
+
+  res.status(200).json({
+    message: "Updated a specific about",
+    status: 200,
+    data: update,
+  });
+};
+
 //delete
 
 const deleteProgramsById = async (req, res) => {
@@ -65,4 +81,5 @@ export default {
   getProgramsById,
   createProgram,
   deleteProgramsById,
+  updateProgram,
 };

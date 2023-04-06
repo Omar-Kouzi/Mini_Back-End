@@ -1,16 +1,19 @@
 import multer from "multer";
-import fs from "fs";
 
-const dir = "./image";
-const storageEngine = multer.diskStorage({
+
+
+// Define storage for uploaded files
+const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, dir);
+    cb(null, "./backend/image/");
   },
   filename: (req, file, cb) => {
-    cb(null, Date.now() + "." + file.storageEngine);
-  },
+    cb(null,file.originalname);
+},
+
 });
 
-const upload = multer({ storageEngine});
+// Create instance of Multer with storage configuration
+const upload = multer({ storage });
+
 export default upload;
- 
