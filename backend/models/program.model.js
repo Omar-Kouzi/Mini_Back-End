@@ -1,7 +1,6 @@
 import mongoose from "mongoose";
 
 const ProgramShema = mongoose.Schema({
-  // numericId: { type: Number, required: true, unique: true },
 
   title: {
     type: String,
@@ -9,13 +8,18 @@ const ProgramShema = mongoose.Schema({
   },
   subTitle: String,
   description: String,
-  image: String,
+  image: {
+    public_id:{
+      type:String,
+      require:true,
+    },
+    url:{
+      type:String,
+      require:true
+    }
+  },
 });
 
-// ProgramShema.pre('save', function (next) { 
-//   this.numericId = parseInt(this._id.toString().slice(-9), 16);
-//   next();
-// });
 
 const Program = mongoose.model("Program", ProgramShema);
 
