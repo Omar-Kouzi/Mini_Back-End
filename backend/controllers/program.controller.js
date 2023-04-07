@@ -3,20 +3,26 @@ import cloudinary from "../middleware/cloudlymiddleware.js";
 //create
 
 const createProgram = async (req, res) => {
-  // const image = req.file ? req.file.path : null;
-  // const { title, subTitle, description } = req.body;
-  // console.log(req.file);
-  // const image_name = req.file.originalname;
-  // const { title, subTitle, description} = req.body;
-  cloudinary.uploader.upload(req.file.path, (error, result) => {
-    if (error) {
-      console.error(error);
-      res.status(500).send('Upload failed');
-    } else {
-      console.log(result);
-      res.send('Upload successful');
-    }
-})
+  const image = req.file ? req.file.path : null;
+  const { title, subTitle, description } = req.body;
+
+  cloudinary.uploader.upload(image);
+  const program = new Program({ title, subTitle, description, image });
+  if (!title) return res.json({ message: "put a title" });
+
+  try {
+    const savedProgram = await program.save();
+    res.json({
+      message: "Program created successfully",
+      status: 200,
+      data: savedProgram,
+    });
+  } catch (error) {
+    res.json({
+      message: "Program created failed",
+      status: 203,
+    });
+  }
 };
 //getAll
 
